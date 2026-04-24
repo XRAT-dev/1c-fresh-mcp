@@ -1,0 +1,8 @@
+mcp[cli]>=1.2.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Опционально: для pdf_invoice.py (генератор PDF)
+reportlab>=4.0.0
+pillow>=10.0.0
+pypdf>=4.0.0

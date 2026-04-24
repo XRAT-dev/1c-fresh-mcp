@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "1c-fresh": {
+      "command": "python3",
+      "args": [
+        "/ABSOLUTE/PATH/TO/1c-fresh-mcp/server.py"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}

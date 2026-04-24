@@ -1,0 +1,37 @@
+# ── Секреты ──────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Python ───────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# ── Окружение разработчика ──────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ── Личные файлы (логотипы, подписи, результаты) ────
+logos/
+signatures/
+output/
+*.pdf
+
+# ── Локальные конфиги MCP-клиентов ──────────────────
+mcp-config.json
+claude_desktop_config.json
