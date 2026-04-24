@@ -186,6 +186,7 @@ def load_invoice(api, guid):
             "price": float(row["Цена"]),
             "sum": float(row["Сумма"]),
             "vat": float(row["СуммаНДС"]),
+            "vat_rate": row.get("СтавкаНДС", "") or "",  # напр. "НДС22"
         })
 
     # Адрес контрагента и организации (первая строка КонтактнаяИнформация с типом «Адрес»)
@@ -359,10 +360,25 @@ def build_pdf(data, out_path, bank_info=None, with_banner=True):
     # ── Итоги ───────────────────────────────────────────────────
     total = sum(it["sum"] for it in data["items"])
     vat = sum(it["vat"] for it in data["items"])
+
+    # Подпись «В том числе НДС …» — берём ставку из строк счёта.
+    # Если все строки в одной ставке — пишем её; иначе общее «НДС».
+    import re as _re
+    rates_used = {it.get("vat_rate") for it in data["items"] if it.get("vat_rate")}
+    if len(rates_used) == 1:
+        r = next(iter(rates_used))
+        if r == "БезНДС":
+            vat_label = "Без НДС"
+        else:
+            m = _re.match(r"НДС(\d+)", r)
+            vat_label = f"В том числе НДС {m.group(1)}%" if m else "В том числе НДС"
+    else:
+        vat_label = "В том числе НДС"
+
     totals_rows = [
         ["", Paragraph("<b>Итого:</b>", st_sumw),
          Paragraph(f"<b>{fmt_money(total)}</b>", st_sumw)],
-        ["", Paragraph("<b>В том числе НДС 22%:</b>", st_sumw),
+        ["", Paragraph(f"<b>{vat_label}:</b>", st_sumw),
          Paragraph(f"<b>{fmt_money(vat)}</b>", st_sumw)],
         ["", Paragraph("<b>Всего к оплате:</b>", st_sumw),
          Paragraph(f"<b>{fmt_money(total)}</b>", st_sumw)],

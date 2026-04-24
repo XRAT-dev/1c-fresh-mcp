@@ -45,7 +45,8 @@ mcp = FastMCP(
     "1c-fresh",
     instructions=(
         "Работа с 1С:Fresh (Бухгалтерия предприятия) через OData.\n"
-        "• НДС по умолчанию — 22% (НДС22) с 01.01.2025.\n"
+        "• НДС по умолчанию берётся из FRESH_VAT_DEFAULT (.env), базово НДС22.\n"
+        "  Допустимые ставки 2026: НДС22/НДС20/НДС10/НДС7/НДС5/НДС0/БезНДС.\n"
         "• Цены в счетах — ВСЕГДА с НДС (includes_vat=True).\n"
         "• Время документов — Новосибирск (UTC+7).\n"
         "• Перед созданием документа ищи контрагента (get_counterparty_by_inn или "
@@ -256,7 +257,7 @@ def make_invoice_item(
     qty: float,
     price: float,
     description: str = "",
-    nds: str = НДС_ПО_УМОЛЧАНИЮ,
+    nds: str = "",
     line_num: int = 1,
 ) -> str:
     """
@@ -264,8 +265,10 @@ def make_invoice_item(
 
     nom_guid — GUID номенклатуры (поле Номенклатура, не _Key!)
     price    — ЦЕНА ЗА ЕДИНИЦУ С НДС (includes_vat=True)
-    nds      — "НДС22" (с 2025 по умолчанию), "НДС20", "НДС10", "НДС0", "БезНДС"
+    nds      — ставка НДС. Пусто → берётся FRESH_VAT_DEFAULT из .env (базово НДС22).
+               Допустимо: "НДС22", "НДС20", "НДС10", "НДС7", "НДС5", "НДС0", "БезНДС".
     """
+    nds = nds or НДС_ПО_УМОЛЧАНИЮ
     return _dump(Fresh1C.make_item(
         nom_guid=nom_guid, qty=qty, price=price,
         description=description, nds=nds, line_num=line_num,

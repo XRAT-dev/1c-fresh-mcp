@@ -42,6 +42,9 @@ REQUEST_TIMEOUT = _env_int("FRESH_TIMEOUT", 30)
 # Часовой пояс сервера 1С в часах от UTC (дата документа)
 TZ_OFFSET_HOURS = _env_int("FRESH_TZ_OFFSET", 3)
 
+# Ставка НДС по умолчанию: НДС22 / НДС20 / НДС10 / НДС7 / НДС5 / НДС0 / БезНДС
+VAT_DEFAULT = _env("FRESH_VAT_DEFAULT", "НДС22")
+
 # ── Для pdf_invoice (необязательно) ─────────────────────────
 PDF_BANK = {
     "name": _env("PDF_BANK_NAME"),
