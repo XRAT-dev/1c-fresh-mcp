@@ -33,7 +33,7 @@
 ## Установка
 
 ```bash
-git clone https://github.com/<your-user>/1c-fresh-mcp.git
+git clone https://github.com/XRAT-dev/1c-fresh-mcp.git
 cd 1c-fresh-mcp
 
 # 1. Заполнить .env
